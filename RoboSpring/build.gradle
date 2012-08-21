@@ -1,0 +1,139 @@
+/**
+ * Created on 2012-07-13
+ *
+ * © 2012 Daniel Thommes
+ */
+apply plugin: 'java'
+apply plugin: 'maven'
+
+project.group 'org.robospring'
+version = '1.0.0'
+
+repositories { 
+	maven { url 'http://repo.springsource.org/plugins-release' }
+	mavenLocal()
+}
+
+configurations {
+    dist.exclude module: 'commons-logging'
+}
+
+dependencies {
+	//dependencies for generating the pom.xml for m2eclipse
+	compile 'org.droid-java-beans:droid-java-beans:1.0.0'
+	compile 'commons-logging:commons-logging:1.1.1'
+	compile("org.aspectj:aspectjweaver:1.6.11")
+	compile("com.google.android:android:4.0.1.2")
+	compile("aopalliance:aopalliance:1.0")
+	compile("commons-pool:commons-pool:1.5.3")
+	compile 'javax.annotation:jsr250-api:1.0'
+	
+	//pack droid java beans into the complete package
+    dist 'org.droid-java-beans:droid-java-beans:1.0.+'
+    
+    compile project(":robospring-core")
+    compile project(":spring-core")
+    compile project(":spring-beans")
+    compile project(":spring-aop")
+    compile project(":spring-context")
+    compile project(":roboguice-annotations")
+    
+}
+
+task pom  << {
+    pom{}.writeTo("pom.xml")
+}
+
+allprojects {
+	apply plugin: 'java'
+	sourceCompatibility=1.5
+	targetCompatibility=1.5
+	
+	repositories { 
+		maven { url 'http://repo.springsource.org/plugins-release' }
+		mavenLocal()
+	}
+}
+
+subprojects {
+	version = '3.1.0.RELEASE'
+	dependencies {
+		compile 'org.droid-java-beans:droid-java-beans:1.0.+'
+		compile 'commons-logging:commons-logging:1.1.1'
+	}
+}
+
+project(':spring-core') {
+	dependencies {
+		compile("org.aspectj:aspectjweaver:1.6.11")
+		compile("com.google.android:android:4.0.1.2")
+	}
+}
+
+project(':spring-beans') {
+	dependencies { 
+		compile project(":spring-core") 
+		compile 'javax.annotation:jsr250-api:1.0'
+	}
+}
+
+project('spring-aop') {
+	dependencies {
+		compile project(":spring-core")
+		compile project(":spring-beans")
+		compile("aopalliance:aopalliance:1.0")
+		compile("commons-pool:commons-pool:1.5.3")
+	}
+}
+
+project('spring-context') {
+	dependencies {
+		compile project(":spring-aop")
+		compile project(":spring-beans")
+		compile project(":spring-core")
+	}
+}
+
+project('roboguice-annotations') {
+	version = '1.0.0.RELEASE'
+	dependencies { compile("com.google.android:android:4.0.1.2") }
+}
+
+project('robospring-core') {
+	version = '1.0.0.SNAPSHOT'
+	dependencies {
+		compile project(":roboguice-annotations")
+		compile project(":spring-context")
+		compile ("com.google.android:android:4.0.1.2")
+	}
+}
+
+jar {
+	//combine all subprojects and the dist-libs (droid-java-beans) in the jar
+	subprojects.each { subproject ->
+		from zipTree(subproject.jar.archivePath)
+	}
+	
+	for(file in configurations.dist) {
+        from zipTree(file)
+    }   
+    
+    manifest.attributes['Implementation-Title'] = rootProject.name
+    manifest.attributes['Implementation-Version'] = rootProject.version
+
+    from("${rootProject.projectDir}/src/dist") {
+        include "license.txt"
+        include "notice.txt"
+        into "META-INF"
+        expand(copyright: new Date().format('yyyy'), version: project.version)
+    }
+}
+
+install {
+    repositories.mavenInstaller {
+    	//Exclude transitive dependencies from the pom - everything to start with is in the jar
+        pom.whenConfigured { generatedPom ->
+	        generatedPom.dependencies.clear()
+		}
+    }
+}

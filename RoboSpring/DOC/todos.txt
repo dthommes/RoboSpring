@@ -1,0 +1,4 @@
+- Allow config location to be
+	Assets (?)
+	res/xml
+	SD-Card

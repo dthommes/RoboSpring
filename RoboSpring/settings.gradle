@@ -1,0 +1,8 @@
+rootProject.name = 'robospring'
+
+include 'spring-core'
+include 'spring-beans'
+include 'spring-aop'
+include 'spring-context'
+include 'roboguice-annotations'
+include 'robospring-core'

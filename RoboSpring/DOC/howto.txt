@@ -1,0 +1,17 @@
+- Download jar
+- Add jar to build path
+- Export jar in build settings
+- Create Configuration
+	- Default: applicationContext.xml in Classpath
+	- Alternative: use robospring.properties contextConfigLocation=/other/classpath/context.xml to configure default
+	- Alternative: use RoboSpring.getContext("your/path");
+	--> Prevents to reopen contexts
+	--> You can also use ClasspathXmlApplicationContext for one-time contexts
+
+- You cannot
+	- see differences file
+	
+- Proguard
+	- recommended due to size of robospring with all features
+	- disable obfuscation! by adding "-dontobfuscate"
+	- For classes you only use in 
