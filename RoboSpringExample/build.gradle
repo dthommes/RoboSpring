@@ -1,0 +1,27 @@
+/**
+ * Created on 2012-08-14
+ *
+ * © 2012 Daniel Thommes
+ */
+
+repositories { 
+	mavenCentral()
+	mavenLocal()
+}
+
+configurations {
+    libs.exclude module: 'android'
+}
+
+dependencies {
+   libs 'org.robospring:robospring:1.0.+'
+}
+
+task deleteLibs(type: Delete) {
+	delete 'libs'
+}
+
+task libs(type: Copy, dependsOn: 'deleteLibs') {
+    into "libs"
+    from configurations.libs
+}
