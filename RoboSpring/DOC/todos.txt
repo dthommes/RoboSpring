@@ -2,3 +2,7 @@
 	Assets (?)
 	res/xml
 	SD-Card
+- Find a solution for JSR250 (javax.*) being in the prohibited package (@PostConstruct...) -> Repacking
+	https://code.google.com/p/dalvik/wiki/JavaxPackages
+- Test for AOP functions
+- p:namespace does not work
