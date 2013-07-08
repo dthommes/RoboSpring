@@ -7,9 +7,14 @@ apply plugin: 'java'
 apply plugin: 'maven'
 
 project.group 'org.robospring'
-version = '1.0.1'
+version = '1.0.2'
 
-repositories { 
+sourceCompatibility=1.6
+targetCompatibility=1.6
+
+[ compileJava, compileTestJava ]*.options*.encoding = 'UTF-8'
+
+repositories {
 	maven { url 'http://repo.springsource.org/plugins-release' }
 	mavenLocal()
 }
@@ -27,17 +32,17 @@ dependencies {
 	compile("aopalliance:aopalliance:1.0")
 	compile("commons-pool:commons-pool:1.5.3")
 	compile 'javax.annotation:jsr250-api:1.0'
-	
+
 	//pack droid java beans into the complete package
     dist 'org.droid-java-beans:droid-java-beans:1.0.+'
-    
+
     compile project(":robospring-core")
     compile project(":spring-core")
     compile project(":spring-beans")
     compile project(":spring-aop")
     compile project(":spring-context")
     compile project(":roboguice-annotations")
-    
+
 }
 
 task pom  << {
@@ -48,8 +53,8 @@ allprojects {
 	apply plugin: 'java'
 	sourceCompatibility=1.5
 	targetCompatibility=1.5
-	
-	repositories { 
+
+	repositories {
 		maven { url 'http://repo.springsource.org/plugins-release' }
 		mavenLocal()
 	}
@@ -71,8 +76,8 @@ project(':spring-core') {
 }
 
 project(':spring-beans') {
-	dependencies { 
-		compile project(":spring-core") 
+	dependencies {
+		compile project(":spring-core")
 		compile 'javax.annotation:jsr250-api:1.0'
 	}
 }
@@ -113,11 +118,11 @@ jar {
 	subprojects.each { subproject ->
 		from zipTree(subproject.jar.archivePath)
 	}
-	
+
 	for(file in configurations.dist) {
         from zipTree(file)
-    }   
-    
+    }
+
     manifest.attributes['Implementation-Title'] = rootProject.name
     manifest.attributes['Implementation-Version'] = rootProject.version
 

@@ -28,6 +28,7 @@ import org.springframework.context.support.AbstractXmlApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.context.support.FileSystemXmlApplicationContext;
 
+import android.content.Context;
 import android.util.Log;
 import android.util.Pair;
 
@@ -65,6 +66,8 @@ public class RoboSpring {
 	 * special getContext method
 	 */
 	private static Map<String, Pair<AbstractXmlApplicationContext, RoboSpringInjector>> contextMap = new HashMap<String, Pair<AbstractXmlApplicationContext, RoboSpringInjector>>();
+
+	private static ClassPathXmlApplicationContext parentContext;
 
 	static {
 		/*************************************************************
@@ -142,6 +145,16 @@ public class RoboSpring {
 	 *
 	 * @param bean The annotated bean that shall be autowired
 	 */
+	public static void autowire(Context androidContext) {
+		createParentContextForAndroid(androidContext);
+		autowire(androidContext, contextConfigLocation);
+	}
+
+	/**
+	 * Autowires the given bean with beans from the default context.
+	 *
+	 * @param bean The annotated bean that shall be autowired
+	 */
 	public static void autowire(Object bean) {
 		autowire(bean, contextConfigLocation);
 	}
@@ -155,6 +168,19 @@ public class RoboSpring {
 	public static void autowire(Object bean, String contextConfigLocation) {
 		getConfigurationPair(contextConfigLocation).second
 				.processInjection(bean);
+	}
+
+	private static void createParentContextForAndroid(Context androidContext) {
+		if (parentContext != null) {
+			return;
+		}
+		Log.i("RoboSpring",
+				"Creating parent context with bean 'androidContext' for you to use in your configuration");
+		// http://stackoverflow.com/questions/1109953/how-can-i-inject-a-bean-into-an-applicationcontext-before-it-loads-from-a-file
+		parentContext = new ClassPathXmlApplicationContext();
+		parentContext.refresh(); // THIS IS REQUIRED
+		parentContext.getBeanFactory().registerSingleton("androidContext",
+				androidContext.getApplicationContext());
 	}
 
 	/**
@@ -202,10 +228,24 @@ public class RoboSpring {
 		}
 
 		if ("classpath".equals(scheme)) {
-			return new ClassPathXmlApplicationContext(resourceName);
+			if (parentContext != null) {
+				String[] configLocations = new String[] { resourceName };
+				return new ClassPathXmlApplicationContext(configLocations,
+						parentContext);
+			}
+			else {
+				return new ClassPathXmlApplicationContext(resourceName);
+			}
 		}
 		else if ("file".equals(scheme)) {
-			return new FileSystemXmlApplicationContext(resourceName);
+			if (parentContext != null) {
+				String[] configLocations = new String[] { resourceName };
+				return new FileSystemXmlApplicationContext(configLocations,
+						parentContext);
+			}
+			else {
+				return new FileSystemXmlApplicationContext(resourceName);
+			}
 		}
 		else {
 			throw new IllegalArgumentException("Cannot handle scheme '"

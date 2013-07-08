@@ -36,11 +36,12 @@ import org.springframework.util.CollectionUtils;
  * contained in mapping file.
  *
  * <p>By default, this implementation looks for the mapping file at
- * <code>META-INF/spring.handlers</code>, but this can be changed using the
+ * <code>robospring/spring.handlers</code>, but this can be changed using the
  * {@link #DefaultNamespaceHandlerResolver(ClassLoader, String)} constructor.
  *
  * @author Rob Harrop
  * @author Juergen Hoeller
+ * @author Daniel Thommes
  * @since 2.0
  * @see NamespaceHandler
  * @see DefaultBeanDefinitionDocumentReader
@@ -50,7 +51,7 @@ public class DefaultNamespaceHandlerResolver implements NamespaceHandlerResolver
 	/**
 	 * The location to look for the mapping files. Can be present in multiple JAR files.
 	 */
-	public static final String DEFAULT_HANDLER_MAPPINGS_LOCATION = "META-INF/spring.handlers";
+	public static final String DEFAULT_HANDLER_MAPPINGS_LOCATION = "robospring/spring.handlers";
 
 
 	/** Logger available to subclasses */

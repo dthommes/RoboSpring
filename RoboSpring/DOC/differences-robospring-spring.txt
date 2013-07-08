@@ -4,3 +4,4 @@
 	- No programmatic configuration
 - Removed all dependencies to Java 6
 - Switched from java.beans to droid.java.beans
+- Moved spring.handlers from META-INF to robospring - extensibility is tbd

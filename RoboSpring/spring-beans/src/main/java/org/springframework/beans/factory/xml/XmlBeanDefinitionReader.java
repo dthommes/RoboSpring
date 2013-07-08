@@ -105,7 +105,8 @@ public class XmlBeanDefinitionReader extends AbstractBeanDefinitionReader {
 	 */
 	private int validationMode = VALIDATION_NONE;
 
-	private boolean namespaceAware = false;
+	//RoboSpring -> validation does not work, so let's use namespaces
+	private boolean namespaceAware = true;
 
 	private Class<?> documentReaderClass = DefaultBeanDefinitionDocumentReader.class;
 
@@ -147,7 +148,8 @@ public class XmlBeanDefinitionReader extends AbstractBeanDefinitionReader {
 	 */
 	public void setValidating(boolean validating) {
 		this.validationMode = (validating ? VALIDATION_AUTO : VALIDATION_NONE);
-		this.namespaceAware = !validating;
+		//RoboSpring - validation will not work, we need namespaceAwareness
+		//this.namespaceAware = !validating;
 	}
 
 	/**
