@@ -37,4 +37,10 @@
         android:onClick="onStartAop"
         android:text="Call BusinessLogic with AOP" />
 
+    <TextView
+        android:id="@+id/businessLogicOutputView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+
 </LinearLayout>

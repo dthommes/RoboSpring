@@ -1,14 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
-	xmlns:util="http://www.springframework.org/schema/util"
+	xmlns:util="http://www.springframework.org/schema/util" xmlns:aop="http://www.springframework.org/schema/aop"
 	xsi:schemaLocation="
            http://www.springframework.org/schema/beans
            http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
            http://www.springframework.org/schema/util
-           http://www.springframework.org/schema/util/spring-util.xsd">
+           http://www.springframework.org/schema/util/spring-util.xsd
+           http://www.springframework.org/schema/aop
+           http://www.springframework.org/schema/aop/spring-aop-3.0.xsd">
+
+	<!-- aop:aspectj-autoproxy /> <bean id="myAspect" class="org.robospring.example.aop.ToastingAspect">
+		</bean -->
 
 	<import resource="parents.xml" />
+
+	<bean id="myServiceUrl" class="java.net.URL">
+		<constructor-arg value="http://www.robospring.org" />
+	</bean>
 
 	<bean id="kelly" class="org.robospring.example.Person">
 		<property name="name" value="Kelly Osbourne" />
@@ -16,18 +25,24 @@
 		<property name="mother" ref="sharon" />
 	</bean>
 
-	<bean id="hdm" class="org.robospring.example.Location">
-		<property name="name" value="HdM Stuttgart" />
-	</bean>
+	<bean id="hdm" class="org.robospring.example.Location" p:name="HdM Stuttgart" />
 
 
 	<!-- AOP example -->
 
-	<!-- bean id="businessLogic" class="org.springframework.aop.framework.ProxyFactoryBean">
+	<bean id="businessLogic" class="org.springframework.aop.framework.ProxyFactoryBean">
 		<property name="proxyInterfaces" value="org.robospring.example.aop.BusinessLogic" />
 		<property name="target" ref="businessLogicTarget" />
+		<property name="interceptorNames">
+			<list>
+				<value>performanceInterceptor</value>
+			</list>
+		</property>
 	</bean>
+	<bean id="businessLogicTarget" class="org.robospring.example.aop.BusinessLogicImpl" />
 
-	<bean id="businessLogicTarget" class="org.robospring.example.aop.BusinessLogicImpl" / -->
+	<bean id="performanceInterceptor" class="org.robospring.example.aop.TracingInterceptor">
+		<property name="context" ref="androidContext" />
+	</bean>
 
 </beans>
