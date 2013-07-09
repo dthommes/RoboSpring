@@ -15,8 +15,8 @@ RoboSpring is released under version 2.0 of the
 
 ## Getting Started
 
- 1. Download the latest RoboSpring release (**robospring-X.X.X.jar** from the release page here on GitHub). Put this file into your application's classpath (e.g. by just dropping it into an Android Application Project's 'lib' folder.)
- 1. Create a Spring configuration - for simplicity use the RoboSpring default location by adding a file named 'applicationContext.xml' into the root of your classpath (src-folder). Add the following content to get started:
+ 1. Download the latest RoboSpring release ( **robospring-X.X.X.jar** from the release page here on GitHub). Put this file into your application's classpath (e.g. by just dropping it into an Android Application Project's `lib` folder.)
+ 1. Create a Spring configuration - for simplicity use the RoboSpring default location by adding a file named `applicationContext.xml` into the root of your classpath (src-folder). Add the following content to get started:
  
  ```xml
 <?xml version="1.0" encoding="UTF-8"?>
@@ -38,7 +38,7 @@ RoboSpring is released under version 2.0 of the
            
 </beans>
  ```
- 1. Let RoboSpring inject references to your beans into your Activities (or other application components). Just call 'RoboSpring.autowire(this)' and let RoboSpring inject properties you have annotated with the 'Autowired' annotation as shown below:
+ 1. Let RoboSpring inject references to your beans into your Activities (or other application components). Just call `RoboSpring.autowire(this)` and let RoboSpring inject properties you have annotated with the `Autowired` annotation as shown below:
   
 ```java
 	@Autowired
@@ -63,7 +63,7 @@ http://static.springsource.org/spring/docs/3.1.x/spring-framework-reference/html
 
 
 ## Get a reference to the Android Context
-You can get a reference to the Android application context to inject it into your Spring Beans easily. The Android application context is pre-defined in RoboSpring's Spring context under the name 'androidContext'. So e.g. you can do the following:
+You can get a reference to the Android application context to inject it into your Spring Beans easily. The Android application context is pre-defined in RoboSpring's Spring context under the name `androidContext`. So e.g. you can do the following:
   
 ```java
 
@@ -83,7 +83,7 @@ You can get a reference to the Android application context to inject it into you
 ## Inject more than Spring Beans
 RoboSpring additionally has preliminary support for **RoboGuice** annotations. You can e.g. inject views from you layout into your Activity. For this we even use the same annotations, so migrating from RoboGuice to RoboSpring should be easy.
 
-When you have the following view in your layout (id is 'textView')...
+When you have the following view in your layout (id is `textView`)...
 
 ```xml
     <TextView
@@ -91,15 +91,15 @@ When you have the following view in your layout (id is 'textView')...
         android:layout_width="fill_parent"
         android:layout_height="wrap_content" />
 ```
-… all you have to do, is define a property of the same name as the ID and annotate it with the 'InjectView' annotation.
+… all you have to do, is define a property of the same name as the ID and annotate it with the `InjectView` annotation.
         
 ```java
 	@InjectView
 	private TextView textView;
 ```
-If you are familiar with RoboGuice, you will notice, that 'InjectView' has no mandatory id attribute. If you leave it away as shown, RoboSpring will deviate it from the property's name. Easy, isn't it?
+If you are familiar with RoboGuice, you will notice, that `InjectView` has no mandatory id attribute. If you leave it away as shown, RoboSpring will deviate it from the property's name. Easy, isn't it?
 
-**PLEASE NOTE**: You must call 'setContentView()' in your Activity before calling 'RoboSpring.autowire(this)'. Otherwise, RoboSpring does not know, where to look for the views!
+**PLEASE NOTE**: You must call `setContentView()` in your Activity before calling `RoboSpring.autowire(this)`. Otherwise, RoboSpring does not know, where to look for the views!
 
 
 **HAPPY INJECTING!**
