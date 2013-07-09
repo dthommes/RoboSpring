@@ -15,8 +15,8 @@ RoboSpring is released under version 2.0 of the
 
 ## Getting Started
 
- 1. Download the latest RoboSpring release ( **robospring-X.X.X.jar** from the release page here on GitHub). Put this file into your application's classpath (e.g. by just dropping it into an Android Application Project's `lib` folder.)
- 1. Create a Spring configuration - for simplicity use the RoboSpring default location by adding a file named `applicationContext.xml` into the root of your classpath (src-folder). Add the following content to get started:
+ * Download the latest RoboSpring release ( **robospring-X.X.X.jar** from the release page here on GitHub). Put this file into your application's classpath (e.g. by just dropping it into an Android Application Project's `lib` folder.)
+ * Create a Spring configuration - for simplicity use the RoboSpring default location by adding a file named `applicationContext.xml` into the root of your classpath (src-folder). Add the following content to get started:
  
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
@@ -37,7 +37,7 @@ RoboSpring is released under version 2.0 of the
            
 </beans>
 ```
-3. Let RoboSpring inject references to your beans into your Activities (or other application components). Just call `RoboSpring.autowire(this)` and let RoboSpring inject properties you have annotated with the `Autowired` annotation as shown below:
+* Let RoboSpring inject references to your beans into your Activities (or other application components). Just call `RoboSpring.autowire(this)` and let RoboSpring inject properties you have annotated with the `Autowired` annotation as shown below:
   
 ```java
 	@Autowired
@@ -54,7 +54,7 @@ RoboSpring is released under version 2.0 of the
 	}
 
 ```
-4. After you have called RoboSpring's autowire method, you can use the injected beans. Well done!
+* After you have called RoboSpring's autowire method, you can use the injected beans. Well done!
 
 For more info you can also refer to Spring's documentation. As RoboSpring is build on 3.1.0 RELEASE, you should refer to:
 
