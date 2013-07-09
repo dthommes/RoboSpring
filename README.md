@@ -37,7 +37,7 @@ RoboSpring is released under version 2.0 of the
            
 </beans>
 ```
- 1. Let RoboSpring inject references to your beans into your Activities (or other application components). Just call `RoboSpring.autowire(this)` and let RoboSpring inject properties you have annotated with the `Autowired` annotation as shown below:
+3. Let RoboSpring inject references to your beans into your Activities (or other application components). Just call `RoboSpring.autowire(this)` and let RoboSpring inject properties you have annotated with the `Autowired` annotation as shown below:
   
 ```java
 	@Autowired
@@ -54,7 +54,7 @@ RoboSpring is released under version 2.0 of the
 	}
 
 ```
-1. After you have called RoboSpring's autowire method, you can use the injected beans. Well done!
+4. After you have called RoboSpring's autowire method, you can use the injected beans. Well done!
 
 For more info you can also refer to Spring's documentation. As RoboSpring is build on 3.1.0 RELEASE, you should refer to:
 
