@@ -3,16 +3,15 @@
 	-> less Logging to init
 	-> PluggableSchemaResolver
 	-> BeansDtdResolver
-	
+
 - Create XML-Reader for res/xml folder
 	-> About 40% faster
 	-> ClassLoader.getResourceAsStream obviously checks the signature each time
 	-> At the moment 11.8% of the overall process
-	-> Evtl. Bufferedinputstream verwenden?
-	
+	-> Evtl. use Bufferedinputstream?
+
 - ExtendedBeanInfo
-	-> Method.equals ist langsam
-	-> Wurde von mir aufgrund des fehlgeschlagenen Tests ja so gemacht... mmh
-	
-- Klassen nicht gefunden beim Laden
-	-> Es gibt diverse Warnings, dass Klassen nicht gefunden werden.
+	-> Method.equals is slow
+	-> Is however required because == does not work in the Dalvik VM here
+
+- Fix warnings about classes not found

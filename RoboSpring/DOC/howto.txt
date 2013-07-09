@@ -10,8 +10,7 @@
 
 - You cannot
 	- see differences file
-	
+
 - Proguard
 	- recommended due to size of robospring with all features
 	- disable obfuscation! by adding "-dontobfuscate"
-	- For classes you only use in 
