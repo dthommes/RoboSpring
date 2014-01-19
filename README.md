@@ -100,6 +100,11 @@ If you are familiar with RoboGuice, you will notice, that `InjectView` has no ma
 
 **PLEASE NOTE**: You must call `setContentView(...)` in your Activity before calling `RoboSpring.autowire(this)`. Otherwise, RoboSpring does not know, where to look for the views!
 
+## RoboSpring in Production
+
+I am using RoboSpring in my Android Client for the RemoteUI Project. Get more information about it at
+
+http://www.remoteui.org
 
 **HAPPY INJECTING!**
 
