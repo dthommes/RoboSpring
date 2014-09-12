@@ -1,10 +1,8 @@
 package org.robospring.example;
 
 import java.net.URL;
-import java.util.Date;
 
 import org.robospring.RoboSpring;
-import org.robospring.example.aop.BusinessLogic;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.support.AbstractXmlApplicationContext;
 
@@ -26,12 +24,6 @@ public class RoboSpringExampleActivity extends Activity {
 
 	@InjectView
 	private TextView businessLogicOutputView;
-
-	@Autowired
-	private Location location;
-
-	@Autowired
-	private BusinessLogic businessLogic;
 
 	@Autowired
 	private URL serviceUrl;
@@ -59,6 +51,10 @@ public class RoboSpringExampleActivity extends Activity {
 		Person kelly = ctx.getBean("kelly", Person.class);
 		textView.setText(kelly.getName() + " -> " + kelly.getFather().getName());
 		timeView.setText("Time: " + duration + " ms");
+
+		// Should have been autowired by annotaiton-config
+		Location location = kelly.getLocation();
+		locationView.setText(location.getName());
 	}
 
 	public void onLoadClicked(View view) {
@@ -72,12 +68,6 @@ public class RoboSpringExampleActivity extends Activity {
 		// setLocation(RoboSpring.getDefaultContext().getBean(Location.class));
 
 		long duration = System.currentTimeMillis() - startTime;
-		locationView.setText("" + location);
 		timeView.setText("Time: " + duration + " ms");
-	}
-
-	public void onStartAop(View view) {
-		Date time = businessLogic.doBusiness(this);
-		businessLogicOutputView.setText(time.toLocaleString());
 	}
 }
