@@ -17,6 +17,7 @@ import org.springframework.beans.factory.BeanCreationException;
 
 import roboguice.inject.InjectView;
 import android.app.Activity;
+import android.app.Fragment;
 import android.view.View;
 
 /**

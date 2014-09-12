@@ -34,7 +34,7 @@ import android.util.Pair;
 
 /**
  * The RoboSpring main class for statically accessing Spring configurations.
- *
+ * 
  * @author Daniel Thommes
  */
 public class RoboSpring {
@@ -118,10 +118,16 @@ public class RoboSpring {
 	 * <code>robospring.properties</code> or the default context
 	 * <code>classpath:/applicationContext.xml</code>, if no other
 	 * <code>contextConfigLocation</code> has been defined.
-	 *
+	 * 
 	 * @return the default or configured {@link RoboSpringApplicationContext}
 	 */
 	public static AbstractXmlApplicationContext getContext() {
+		return getContext(contextConfigLocation);
+	}
+
+	public static AbstractXmlApplicationContext getContext(
+			Context androidContext) {
+		createParentContextForAndroid(androidContext);
 		return getContext(contextConfigLocation);
 	}
 
@@ -129,7 +135,7 @@ public class RoboSpring {
 	 * Returns the {@link AbstractXmlApplicationContext} defined by the given
 	 * resource. This way you can use different contexts at the same time or
 	 * access configurations programmatically, e.g. for unit testing.
-	 *
+	 * 
 	 * @param contextConfigLocation contextConfigLocation of the spring
 	 * configuration
 	 * @return the {@link AbstractXmlApplicationContext} configured in the
@@ -140,9 +146,15 @@ public class RoboSpring {
 		return getConfigurationPair(contextConfigLocation).first;
 	}
 
+	public static AbstractXmlApplicationContext getContext(
+			Context androidContext, String contextConfigLocation) {
+		createParentContextForAndroid(androidContext);
+		return getConfigurationPair(contextConfigLocation).first;
+	}
+
 	/**
 	 * Autowires the given bean with beans from the default context.
-	 *
+	 * 
 	 * @param bean The annotated bean that shall be autowired
 	 */
 	public static void autowire(Context androidContext) {
@@ -152,7 +164,7 @@ public class RoboSpring {
 
 	/**
 	 * Autowires the given bean with beans from the default context.
-	 *
+	 * 
 	 * @param bean The annotated bean that shall be autowired
 	 */
 	public static void autowire(Object bean) {
@@ -162,7 +174,7 @@ public class RoboSpring {
 	/**
 	 * Autowires the given bean with beans from the context defined by the
 	 * resourceName.
-	 *
+	 * 
 	 * @param bean The annotated bean that shall be autowired
 	 */
 	public static void autowire(Object bean, String contextConfigLocation) {
