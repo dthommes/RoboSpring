@@ -7,7 +7,7 @@ apply plugin: 'java'
 apply plugin: 'maven'
 
 project.group 'org.robospring'
-version = '1.0.2'
+version = '1.0.5'
 
 sourceCompatibility=1.6
 targetCompatibility=1.6
@@ -53,6 +53,11 @@ allprojects {
 	apply plugin: 'java'
 	sourceCompatibility=1.5
 	targetCompatibility=1.5
+	
+	tasks.withType(Compile) {
+	    options.encoding = 'UTF-8'
+	}
+
 
 	repositories {
 		maven { url 'http://repo.springsource.org/plugins-release' }
@@ -110,6 +115,9 @@ project('robospring-core') {
 		compile project(":roboguice-annotations")
 		compile project(":spring-context")
 		compile ("com.google.android:android:4.0.1.2")
+		compile 'com.google.android:support-v4:r6'
+		compile 'com.j256.ormlite:ormlite-core:4.48'
+		compile 'com.j256.ormlite:ormlite-android:4.48'
 	}
 }
 

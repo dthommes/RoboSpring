@@ -5,9 +5,11 @@
  */
 package org.robospring.example;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 /**
- *
- *
+ * 
+ * 
  * @author Daniel Thommes
  */
 public class Person {
@@ -15,6 +17,24 @@ public class Person {
 	private Person father;
 	private Person mother;
 	private String name;
+
+	@Autowired
+	private Location location;
+
+	/**
+	 * @return the location
+	 */
+	public Location getLocation() {
+		return location;
+	}
+
+	/**
+	 * @param location
+	 *            the location to set
+	 */
+	public void setLocation(Location location) {
+		this.location = location;
+	}
 
 	/**
 	 * @return the father
