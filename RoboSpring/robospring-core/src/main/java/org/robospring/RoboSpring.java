@@ -23,7 +23,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 
+import org.robospring.android.AndroidContextAwareProcessor;
 import org.robospring.inject.RoboSpringInjector;
+import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.context.support.AbstractXmlApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.context.support.FileSystemXmlApplicationContext;
@@ -68,6 +70,8 @@ public class RoboSpring {
 	private static Map<String, Pair<AbstractXmlApplicationContext, RoboSpringInjector>> contextMap = new HashMap<String, Pair<AbstractXmlApplicationContext, RoboSpringInjector>>();
 
 	private static ClassPathXmlApplicationContext parentContext;
+
+	private static Context androidAppContext;
 
 	static {
 		/*************************************************************
@@ -191,8 +195,10 @@ public class RoboSpring {
 		// http://stackoverflow.com/questions/1109953/how-can-i-inject-a-bean-into-an-applicationcontext-before-it-loads-from-a-file
 		parentContext = new ClassPathXmlApplicationContext();
 		parentContext.refresh(); // THIS IS REQUIRED
-		parentContext.getBeanFactory().registerSingleton("androidContext",
-				androidContext.getApplicationContext());
+		androidAppContext = androidContext.getApplicationContext();
+		ConfigurableListableBeanFactory beanFactory = parentContext
+				.getBeanFactory();
+		beanFactory.registerSingleton("androidContext", androidAppContext);
 	}
 
 	/**
@@ -243,7 +249,15 @@ public class RoboSpring {
 			if (parentContext != null) {
 				String[] configLocations = new String[] { resourceName };
 				return new ClassPathXmlApplicationContext(configLocations,
-						parentContext);
+						parentContext) {
+					protected void prepareBeanFactory(
+							ConfigurableListableBeanFactory beanFactory) {
+						beanFactory
+								.addBeanPostProcessor(new AndroidContextAwareProcessor(
+										androidAppContext));
+						super.prepareBeanFactory(beanFactory);
+					};
+				};
 			}
 			else {
 				return new ClassPathXmlApplicationContext(resourceName);
@@ -253,7 +267,15 @@ public class RoboSpring {
 			if (parentContext != null) {
 				String[] configLocations = new String[] { resourceName };
 				return new FileSystemXmlApplicationContext(configLocations,
-						parentContext);
+						parentContext) {
+					protected void prepareBeanFactory(
+							ConfigurableListableBeanFactory beanFactory) {
+						beanFactory
+								.addBeanPostProcessor(new AndroidContextAwareProcessor(
+										androidAppContext));
+						super.prepareBeanFactory(beanFactory);
+					};
+				};
 			}
 			else {
 				return new FileSystemXmlApplicationContext(resourceName);
