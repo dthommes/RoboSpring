@@ -6,9 +6,8 @@
 package org.robospring.ormlite.android;
 
 import java.sql.SQLException;
-import java.util.List;
 
-import org.robospring.ormlite.DaoFactory;
+import org.robospring.ormlite.AbstractDaoFactory;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.context.ApplicationContext;
@@ -30,25 +29,8 @@ import com.j256.ormlite.table.TableUtils;
  * 
  * @author Daniel Thommes
  */
-public class DaoFactoryAndroidImpl implements DaoFactory, InitializingBean,
+public class DaoFactoryAndroidImpl extends AbstractDaoFactory implements
 		ApplicationContextAware {
-
-	/**
-	 * Name of the database file
-	 */
-	private String databaseName;
-
-	/**
-	 * Version of the database
-	 */
-	private int databaseVersion = 1;
-
-	/**
-	 * List of entity classes to generate tables for
-	 */
-	private List<Class<?>> entityClasses;
-
-	private List<Object> initialEntities;
 
 	/**
 	 * OrmLiteSqliteOpenHelper for later use in DAOs
@@ -56,13 +38,6 @@ public class DaoFactoryAndroidImpl implements DaoFactory, InitializingBean,
 	private DatabaseHelper helper;
 
 	private Context context;
-
-	/**
-	 * @param entityClasses the entityClasses to set
-	 */
-	public void setEntityClasses(List<Class<?>> entityClasses) {
-		this.entityClasses = entityClasses;
-	}
 
 	/**
 	 * 
@@ -119,20 +94,6 @@ public class DaoFactoryAndroidImpl implements DaoFactory, InitializingBean,
 	}
 
 	/**
-	 * @param databaseName the databaseName to set
-	 */
-	public void setDatabaseName(String databaseName) {
-		this.databaseName = databaseName;
-	}
-
-	/**
-	 * @param initialEntities the initialEntities to set
-	 */
-	public void setInitialEntities(List<Object> initialEntities) {
-		this.initialEntities = initialEntities;
-	}
-
-	/**
 	 * {@inheritDoc}
 	 * @see org.springframework.context.ApplicationContextAware#setApplicationContext(org.springframework.context.ApplicationContext)
 	 */
@@ -147,18 +108,15 @@ public class DaoFactoryAndroidImpl implements DaoFactory, InitializingBean,
 	 * @see org.springframework.beans.factory.InitializingBean#afterPropertiesSet()
 	 */
 	public void afterPropertiesSet() throws Exception {
-		Assert.notNull(databaseName, "The databaseName is required.");
-		Assert.notNull(entityClasses, "Please set one or more entityClasses");
-		Assert.notEmpty(entityClasses, "Please set one or more entityClasses");
+		super.afterPropertiesSet();
 		Assert.notNull(context,
 				"An Android context is not contained in your Spring ApplicationContext"
 						+ " - aren't you running RoboSpring on Android?");
-
 		helper = new DatabaseHelper(context, databaseName, databaseVersion);
 
 	}
 
-	public <T, ID> Dao<T, ID> getDao(Class<T> entityClass) throws SQLException {
-		return DaoManager.createDao(helper.getConnectionSource(), entityClass);
+	protected ConnectionSource getConnectionSource() {
+		return helper.getConnectionSource();
 	}
 }

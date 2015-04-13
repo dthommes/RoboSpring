@@ -23,16 +23,17 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.robospring.android.AndroidContextAwareProcessor;
 import org.robospring.inject.RoboSpringInjector;
+import org.robospring.util.Pair;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.context.support.AbstractXmlApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.context.support.FileSystemXmlApplicationContext;
 
 import android.content.Context;
-import android.util.Log;
-import android.util.Pair;
 
 /**
  * The RoboSpring main class for statically accessing Spring configurations.
@@ -40,6 +41,8 @@ import android.util.Pair;
  * @author Daniel Thommes
  */
 public class RoboSpring {
+
+	private static final Log log = LogFactory.getLog(RoboSpring.class);
 
 	/**
 	 * Default context config location - points to the classpath
@@ -82,8 +85,7 @@ public class RoboSpring {
 			inStream = RoboSpring.class
 					.getResourceAsStream(ROBOSPRING_PROPERTIES_FILENAME);
 			if (inStream == null) {
-				Log.w("RoboSpring", "Could not find "
-						+ ROBOSPRING_PROPERTIES_FILENAME
+				log.info("Could not find " + ROBOSPRING_PROPERTIES_FILENAME
 						+ ". Using default location: "
 						+ DEFAULT_CONTEXT_CONFIG_LOCATION);
 			}
@@ -94,11 +96,10 @@ public class RoboSpring {
 						.getProperty(CONTEXT_CONFIG_LOCATION_KEY);
 				if (contextConfigLocation == null
 						|| contextConfigLocation.trim().equals("")) {
-					Log.w("RoboSpring",
-							ROBOSPRING_PROPERTIES_FILENAME
-									+ " does not define the key "
-									+ CONTEXT_CONFIG_LOCATION_KEY
-									+ ". Using default location: classpath:/applicationContext.xml");
+					log.info(ROBOSPRING_PROPERTIES_FILENAME
+							+ " does not define the key "
+							+ CONTEXT_CONFIG_LOCATION_KEY
+							+ ". Using default location: classpath:/applicationContext.xml");
 				}
 			}
 		}
@@ -190,8 +191,7 @@ public class RoboSpring {
 		if (parentContext != null) {
 			return;
 		}
-		Log.i("RoboSpring",
-				"Creating parent context with bean 'androidContext' for you to use in your configuration");
+		log.info("Creating parent context with bean 'androidContext' for you to use in your configuration");
 		// http://stackoverflow.com/questions/1109953/how-can-i-inject-a-bean-into-an-applicationcontext-before-it-loads-from-a-file
 		parentContext = new ClassPathXmlApplicationContext();
 		parentContext.refresh(); // THIS IS REQUIRED
@@ -238,8 +238,7 @@ public class RoboSpring {
 			resourceName = url.getPath();
 		}
 		catch (URISyntaxException e) {
-			Log.w("RoboSpring",
-					"ContextConfigLocation does not contain a scheme identifier - using classpath:/ as default.");
+			log.warn("ContextConfigLocation does not contain a scheme identifier - using classpath:/ as default.");
 			// Trying to load from class path with this name
 			scheme = "classpath";
 			resourceName = contextConfigLocation;

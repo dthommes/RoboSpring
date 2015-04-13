@@ -7,7 +7,7 @@ apply plugin: 'java'
 apply plugin: 'maven'
 
 project.group 'org.robospring'
-version = '1.0.6'
+version = '1.0.7-SNAPSHOT'
 
 sourceCompatibility=1.6
 targetCompatibility=1.6
@@ -118,6 +118,7 @@ project('robospring-core') {
 		compile 'com.google.android:support-v4:r6'
 		compile 'com.j256.ormlite:ormlite-core:4.48'
 		compile 'com.j256.ormlite:ormlite-android:4.48'
+		compile 'com.j256.ormlite:ormlite-jdbc:4.48'
 	}
 }
 

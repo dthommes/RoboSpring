@@ -13,7 +13,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.robospring</groupId>
 	<artifactId>robospring</artifactId>
-	<version>1.0.5</version>
+	<version>1.0.7-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
 	<name>RoboSpring</name>
@@ -91,6 +91,13 @@
 			<groupId>com.j256.ormlite</groupId>
 			<artifactId>ormlite-android</artifactId>
 			<version>4.48</version>
+			<optional>true</optional>
+		</dependency>
+		<dependency>
+			<groupId>com.j256.ormlite</groupId>
+			<artifactId>ormlite-jdbc</artifactId>
+			<version>4.48</version>
+			<optional>true</optional>
 		</dependency>
 	</dependencies>
 
