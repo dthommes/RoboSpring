@@ -18,6 +18,7 @@ import org.springframework.beans.factory.BeanCreationException;
 import roboguice.inject.InjectView;
 import android.app.Activity;
 import android.app.Fragment;
+import android.content.Context;
 import android.view.View;
 
 /**
@@ -79,17 +80,35 @@ public class ViewInjector implements Injector {
 			Annotation annotation) throws ClassNotFoundException,
 			NoSuchFieldException, IllegalAccessException {
 		InjectView injectAnnotation = (InjectView) annotation;
-		Activity activity = null;
+
+		View view;
+		int viewId;
 		if (target instanceof Activity) {
-			activity = (Activity) target;
+			Activity activity = (Activity) target;
+			viewId = getViewId(propertyName, injectAnnotation, activity);
+			view = activity.findViewById(viewId);
+		}
+		else if (target instanceof Fragment) {
+			Fragment fragment = (Fragment) target;
+			viewId = getViewId(propertyName, injectAnnotation,
+					fragment.getActivity());
+			View fragmentView = fragment.getView();
+			view = fragmentView != null ? fragmentView.findViewById(viewId)
+					: null;
+		}
+		else if (target instanceof android.support.v4.app.Fragment) {
+			android.support.v4.app.Fragment fragment = (android.support.v4.app.Fragment) target;
+			viewId = getViewId(propertyName, injectAnnotation,
+					fragment.getActivity());
+			View fragmentView = fragment.getView();
+			view = fragmentView != null ? fragmentView.findViewById(viewId)
+					: null;
 		}
 		else {
 			throw new BeanCreationException(
-					"Could not inject value - target object is not an Activity.");
+					"Could not inject value - target object is not an Activity or Fragment.");
 		}
-		int viewId = injectAnnotation.value() != -1 ? injectAnnotation.value()
-				: getViewIdByPropertyName(propertyName, activity);
-		View view = activity.findViewById(viewId);
+
 		if (view == null) {
 			throw new BeanCreationException("Could not inject view '"
 					+ propertyName + "' - view with ID '" + viewId
@@ -98,18 +117,26 @@ public class ViewInjector implements Injector {
 		return view;
 	}
 
+	private int getViewId(String propertyName, InjectView injectAnnotation,
+			Activity activity) throws ClassNotFoundException,
+			NoSuchFieldException, IllegalAccessException {
+		return injectAnnotation.value() != -1 ? injectAnnotation.value()
+				: getViewIdByPropertyName(propertyName,
+						activity.getApplicationContext());
+	}
+
 	/**
 	 * @param propertyName
-	 * @param activity
+	 * @param context
 	 * @return
 	 * @throws ClassNotFoundException
 	 * @throws NoSuchFieldException
 	 * @throws IllegalAccessException
 	 */
 	private static int getViewIdByPropertyName(String propertyName,
-			Activity activity) throws ClassNotFoundException,
+			Context context) throws ClassNotFoundException,
 			NoSuchFieldException, IllegalAccessException {
-		String packageName = activity.getApplicationContext().getPackageName();
+		String packageName = context.getApplicationContext().getPackageName();
 		Class<?> idClass = Class.forName(packageName + ".R$id");
 		Field idField = idClass.getField(propertyName);
 		return idField.getInt(idClass);
