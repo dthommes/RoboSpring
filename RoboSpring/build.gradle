@@ -7,7 +7,7 @@ apply plugin: 'java'
 apply plugin: 'maven'
 
 project.group 'org.robospring'
-version = '1.0.7-SNAPSHOT'
+version = '1.0.7'
 
 sourceCompatibility=1.6
 targetCompatibility=1.6
