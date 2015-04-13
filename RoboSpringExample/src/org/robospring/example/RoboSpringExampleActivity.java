@@ -7,12 +7,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.support.AbstractXmlApplicationContext;
 
 import roboguice.inject.InjectView;
-import android.app.Activity;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 import android.view.View;
 import android.widget.TextView;
 
-public class RoboSpringExampleActivity extends Activity {
+public class RoboSpringExampleActivity extends FragmentActivity {
 
 	@InjectView
 	private TextView textView;
@@ -21,9 +21,6 @@ public class RoboSpringExampleActivity extends Activity {
 	private TextView timeView;
 
 	private TextView locationView;
-
-	@InjectView
-	private TextView businessLogicOutputView;
 
 	@Autowired
 	private URL serviceUrl;

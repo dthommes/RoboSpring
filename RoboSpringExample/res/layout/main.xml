@@ -31,16 +31,16 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content" />
 
-    <Button
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:onClick="onStartAop"
-        android:text="Call BusinessLogic with AOP" />
+    <fragment
+        android:id="@+id/myFragment"
+        android:name="org.robospring.example.RoboSpringExampleFragment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 
-    <TextView
-        android:id="@+id/businessLogicOutputView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
+    <fragment
+        android:id="@+id/mySupportFragment"
+        android:name="org.robospring.example.RoboSpringExampleSupportFragment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 
 </LinearLayout>
